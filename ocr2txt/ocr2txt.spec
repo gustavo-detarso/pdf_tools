@@ -7,6 +7,7 @@ a = Analysis(
     datas=[
         ('tesseract', 'tesseract'),
         ('poppler', 'poppler'),
+        ('bin', 'bin'),
     ],
     hiddenimports=[],
     hookspath=[],
