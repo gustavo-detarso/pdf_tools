@@ -28,7 +28,7 @@ jobs:
 
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --onefile ocr2txt.py
+        pyinstaller --onefile ocr2txt/ocr2txt.py
 
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v4
