@@ -1,0 +1,100 @@
+# ========== PYTHON ==========
+
+# Bytecode Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de log do Python
+*.log
+
+# Ambientes virtuais
+venv/
+.env/
+.venv/
+ENV/
+env/
+env.bak/
+# Poetry
+.poetry/
+
+# Configuração de ferramentas Python
+.mypy_cache/
+.pytest_cache/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ========== PYINSTALLER ==========
+
+# Pastas e arquivos gerados por PyInstaller
+build/
+#dist/
+#*.spec
+
+# ========== SISTEMA/OS ==========
+
+# Arquivos do macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Arquivos do Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ========== IDEs E EDITORES ==========
+
+# VSCode
+.vscode/
+.history/
+
+# JetBrains (PyCharm, IntelliJ)
+.idea/
+*.iml
+
+# Sublime
+*.sublime-workspace
+*.sublime-project
+
+# ========== DOCKER ==========
+
+# Docker artefatos (caso use compose ou arquivos de build locais)
+**/.docker-compose*
+**/Dockerfile*
+
+# ========== OUTROS ARQUIVOS TEMPORÁRIOS ==========
+
+# Arquivos temporários ou backups
+*.swp
+*.swo
+*.bak
+*.tmp
+*~
+
+# ========== ARQUIVOS DE BANCO/EXEMPLO ==========
+
+# Bancos SQLite e outros arquivos de exemplo (ajuste se não quiser ignorar!)
+*.sqlite3
+*.db
+*.sqlite
+
+# ========== OUTROS ==========
+
+# Ignora arquivos de configuração de depurador do VSCode
+.launch.json
+
+# ========== PERSONALIZAÇÃO ==========
+
+# Se tiver mais alguma pasta específica para ignorar, adicione aqui:
+# ex: resultados temporários, outputs de processamento, etc
+# results/
+# output/
+
+**/build/
