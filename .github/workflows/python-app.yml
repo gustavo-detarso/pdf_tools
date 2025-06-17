@@ -25,7 +25,7 @@ jobs:
 
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --onefile --add-data "ocr2txt/tesseract;tesseract" --add-data "ocr2txt/poppler;poppler" ocr2txt/ocr2txt.py
+        pyinstaller --onefile --add-data "ocr2txt/tesseract;tesseract" --add-data "ocr2txt/poppler;poppler" --add-data "ocr2txt/bin;bin" ocr2txt/ocr2txt.py
 
     - name: Upload EXE as Artifact
       uses: actions/upload-artifact@v4
