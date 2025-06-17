@@ -1,11 +1,13 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-
 a = Analysis(
     ['ocr2txt.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[
+        ('tesseract', 'tesseract'),
+        ('poppler', 'poppler'),
+    ],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

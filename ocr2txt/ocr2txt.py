@@ -22,13 +22,14 @@ def corrigir_texto(texto):
         texto = re.sub(rf"\b{errado}\b", certo, texto, flags=re.IGNORECASE)
     return texto
 
+def resource_path(relative_path):
+    """Obtem caminho absoluto, funciona em dev e PyInstaller."""
+    base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+    return os.path.join(base_path, relative_path)
+
 def get_tesseract_path():
     # Para empacotado (PyInstaller) ou modo dev
-    if getattr(sys, 'frozen', False):
-        base_path = sys._MEIPASS
-    else:
-        base_path = os.path.dirname(__file__)
-    return os.path.join(base_path, "tesseract", "tesseract.exe")
+    return resource_path(os.path.join("tesseract", "tesseract.exe"))
 
 # Configura pytesseract para usar o binário local
 pytesseract.pytesseract.tesseract_cmd = get_tesseract_path()
@@ -61,7 +62,8 @@ def extrair_ocr():
 
         messagebox.showinfo("Processando", "Extraindo texto, pode demorar...")
 
-        paginas = convert_from_path(pdf_path, 400)  # dpi maior
+        poppler_path = resource_path("poppler")  # <<< ALTERAÇÃO PRINCIPAL!
+        paginas = convert_from_path(pdf_path, 400, poppler_path=poppler_path)  # Usa poppler do pacote
         custom_config = r'--oem 3 --psm 6'
 
         with open(saida_txt, "w", encoding="utf-8") as out_file:
