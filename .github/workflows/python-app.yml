@@ -6,6 +6,11 @@ on:
       - 'ocr2txt-v*'
       - 'pdfmanip-v*'
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Nome do tag (ex: ocr2txt-v1.0.0-beta)'
+        required: true
+        default: ''
 
 jobs:
   build:
@@ -29,7 +34,11 @@ jobs:
       id: target
       shell: bash
       run: |
-        TAG_NAME="${GITHUB_REF#refs/tags/}"
+        if [[ -n "${{ github.event.inputs.tag_name }}" ]]; then
+          TAG_NAME="${{ github.event.inputs.tag_name }}"
+        else
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+        fi
         if [[ "$TAG_NAME" == ocr2txt-v* ]]; then
           echo "program=ocr2txt" >> $GITHUB_OUTPUT
         elif [[ "$TAG_NAME" == pdfmanip-v* ]]; then
@@ -54,6 +63,7 @@ jobs:
     - name: Upload to GitHub Release
       uses: softprops/action-gh-release@v2
       with:
+        tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
         files: ${{ steps.target.outputs.program }}.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
