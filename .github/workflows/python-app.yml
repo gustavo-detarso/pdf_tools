@@ -1,8 +1,10 @@
-name: Build ocr2txt EXE
+name: Build EXE and Release
 
 on:
   push:
-    branches: [main]
+    tags:
+      - 'ocr2txt-v*'
+      - 'pdfmanip-v*'
   workflow_dispatch:
 
 jobs:
@@ -23,12 +25,34 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller
 
+    - name: Determine target
+      id: target
+      run: |
+        TAG_NAME="${GITHUB_REF#refs/tags/}"
+        if [[ "$TAG_NAME" == ocr2txt-v* ]]; then
+          echo "program=ocr2txt" >> $GITHUB_OUTPUT
+        elif [[ "$TAG_NAME" == pdfmanip-v* ]]; then
+          echo "program=pdfmanip" >> $GITHUB_OUTPUT
+        else
+          echo "No recognized program for tag $TAG_NAME"
+          exit 1
+        fi
+
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --onefile --add-data "ocr2txt/tesseract;tesseract" --add-data "ocr2txt/poppler;poppler" --add-data "ocr2txt/bin;bin" ocr2txt/ocr2txt.py
+        program=${{ steps.target.outputs.program }}
+        cd $program
+        if [ "$program" = "ocr2txt" ]; then
+          pyinstaller --onefile --add-data "tesseract;tesseract" --add-data "poppler;poppler" --add-data "bin;bin" ocr2txt.py
+          cp dist/ocr2txt.exe ../
+        elif [ "$program" = "pdfmanip" ]; then
+          pyinstaller --onefile pdfmanip.py
+          cp dist/pdfmanip.exe ../
+        fi
 
-    - name: Upload EXE as Artifact
-      uses: actions/upload-artifact@v4
+    - name: Upload to GitHub Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: ocr2txt_exe
-        path: dist/ocr2txt.exe
+        files: ${{ steps.target.outputs.program }}.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
