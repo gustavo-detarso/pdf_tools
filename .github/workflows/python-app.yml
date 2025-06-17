@@ -1,10 +1,8 @@
-name: Build Windows EXE
+name: Build ocr2txt EXE
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -12,26 +10,28 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12'  # ou a versão desejada
+        python-version: '3.12'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r ocr2txt/requirements.txt
+        pip install -r requirements.txt
         pip install pyinstaller
 
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --onefile ocr2txt/ocr2txt.py
+        pyinstaller --onefile ^
+          --add-data "tesseract;tesseract" ^
+          --add-data "poppler;poppler" ^
+          ocr2txt.py
 
-    - name: Upload EXE artifact
+    - name: Upload EXE as Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ocr2txt-exe
+        name: ocr2txt_exe
         path: dist/ocr2txt.exe
