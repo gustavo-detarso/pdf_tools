@@ -49,6 +49,7 @@ jobs:
         fi
 
     - name: Build EXE with PyInstaller
+      shell: bash
       run: |
         program=${{ steps.target.outputs.program }}
         cd $program
