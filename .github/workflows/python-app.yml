@@ -27,6 +27,7 @@ jobs:
 
     - name: Determine target
       id: target
+      shell: bash
       run: |
         TAG_NAME="${GITHUB_REF#refs/tags/}"
         if [[ "$TAG_NAME" == ocr2txt-v* ]]; then
